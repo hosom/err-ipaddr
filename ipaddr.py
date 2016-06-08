@@ -7,6 +7,9 @@ from errbot import BotPlugin, botcmd, cmdfilter
 _IP_API = 'origin.asn.cymru.com'
 _ASN_API = 'asn.cymru.com'
 
+OriginReply = namedtuple('OriginReply', 'asn subnet country issuer registry_date')
+ASReply = namedtuple('ASReply', 'asn country issuer registry_date registrant')
+
 def ip2asn(ip):
 	'''Lookup an IP address in Team Cymru's IP ASN database.'''
 	reverse_ip = '.'.join(reversed(ip.split('.')))
