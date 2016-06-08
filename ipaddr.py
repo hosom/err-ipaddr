@@ -2,6 +2,7 @@ import re
 import ipaddress
 import dns.resolver
 
+from collections import namedtuple
 from errbot import BotPlugin, botcmd, cmdfilter
 
 _IP_API = 'origin.asn.cymru.com'
