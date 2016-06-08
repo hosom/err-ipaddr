@@ -67,6 +67,10 @@ class IPMatch(BotPlugin):
 				ip = ipaddress.ip_address(match.group(0))
 			except ValueError:
 				return
+
+			if not ip.is_global:
+				return
+
 			self.send(msg.to, 'Found IP Address: %s' % (ip))
 			self.send(msg.to, ip2asn(str(ip)))
 		return
