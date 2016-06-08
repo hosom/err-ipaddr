@@ -78,10 +78,13 @@ class IPMatch(BotPlugin):
 			except ValueError:
 				continue
 
+			ignore = False
 			# If the ip is in a private address space, skip it.
 			for network in self._private_networks:
 				if ip in network:
-					continue
+					ignore = True
+			if ignore:
+				continue
 
 			self.send(msg.to, 'Found IP Address: %s' % (ip))
 			self.send(msg.to, ip2asn(str(ip)))
