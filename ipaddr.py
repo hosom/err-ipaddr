@@ -54,6 +54,16 @@ class IPMatch(BotPlugin):
 
 		self.pattern = re.compile('(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})')
 
+		self._private_networks = [
+        ipaddress.IPv4Network('0.0.0.0/8'),
+        ipaddress.IPv4Network('10.0.0.0/8'),
+        ipaddress.IPv4Network('127.0.0.0/8'),
+        ipaddress.IPv4Network('169.254.0.0/16'),
+        ipaddress.IPv4Network('172.16.0.0/12'),
+        ipaddress.IPv4Network('192.168.0.0/16'),
+        ipaddress.IPv4Network('255.255.255.255/32'),
+        ]
+
 	def callback_message(self, msg):
 		'''Check the messages if they contain an IP address.'''
 		user = "@%s" % (msg.frm.username)
@@ -66,10 +76,12 @@ class IPMatch(BotPlugin):
 			try:
 				ip = ipaddress.ip_address(match.group(0))
 			except ValueError:
-				return
+				continue
 
-			if not ip.is_global:
-				return
+			# If the ip is in a private address space, skip it.
+			for network in self._private_networks:
+				if ip in network:
+					continue
 
 			self.send(msg.to, 'Found IP Address: %s' % (ip))
 			self.send(msg.to, ip2asn(str(ip)))
