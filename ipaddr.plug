@@ -1,0 +1,9 @@
+[Core]
+Name = IPAddr
+Module = ipaddr
+
+[Documentation]
+Description = You know, for ip addresses.
+
+[Python]
+Version = 3
