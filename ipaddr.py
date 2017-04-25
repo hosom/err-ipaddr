@@ -54,10 +54,11 @@ class IPMatch(BotPlugin):
 
 		self.pattern = re.compile('(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})')
 
+		'''
 		self._private_networks = [ipaddress.IPv4Network(addr) 
 									for addr in self.config['private_nets']]
-
-		'''
+		
+		
 		self._private_networks = [
         ipaddress.IPv4Network('0.0.0.0/8'),
         ipaddress.IPv4Network('10.0.0.0/8'),
@@ -80,6 +81,11 @@ class IPMatch(BotPlugin):
 								'192.168.0.0/16',
 								'255.255.255.255/32']
 		}
+
+	@botcmd(admin_only=True)
+	def ipaddr_compile(self, msg, args):
+		self._private_networks = [ipaddress.IPv4Network(addr) 
+									for addr in self.config['private_nets']]
 
 	def callback_message(self, msg):
 		'''Check the messages if they contain an IP address.'''
