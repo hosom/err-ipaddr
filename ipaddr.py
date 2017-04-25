@@ -53,22 +53,7 @@ class IPMatch(BotPlugin):
 		super().__init__(bot)
 
 		self.pattern = re.compile('(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})')
-
-		'''
-		self._private_networks = [ipaddress.IPv4Network(addr) 
-									for addr in self.config['private_nets']]
-		
-		
-		self._private_networks = [
-        ipaddress.IPv4Network('0.0.0.0/8'),
-        ipaddress.IPv4Network('10.0.0.0/8'),
-        ipaddress.IPv4Network('127.0.0.0/8'),
-        ipaddress.IPv4Network('169.254.0.0/16'),
-        ipaddress.IPv4Network('172.16.0.0/12'),
-        ipaddress.IPv4Network('192.168.0.0/16'),
-        ipaddress.IPv4Network('255.255.255.255/32'),
-        ]
-        '''
+		self._private_networks = []
 
 	def get_configuration_template(self):
 		'''Define the configuration template for the plugin'''
@@ -86,9 +71,14 @@ class IPMatch(BotPlugin):
 	def ipaddr_compile(self, msg, args):
 		self._private_networks = [ipaddress.IPv4Network(addr) 
 									for addr in self.config['private_nets']]
+		return "Private network configuration compiled."
 
 	def callback_message(self, msg):
 		'''Check the messages if they contain an IP address.'''
+
+		if len(self._private_networks) < 2:
+			self.ipaddr_compile(None, None, None)
+
 		user = "@%s" % (msg.frm.username)
 		if user == str(self.bot_identifier):
 			return
