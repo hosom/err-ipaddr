@@ -77,7 +77,7 @@ class IPMatch(BotPlugin):
 		'''Check the messages if they contain an IP address.'''
 
 		if len(self._private_networks) < 2:
-			self.ipaddr_compile(None, None, None)
+			self.ipaddr_compile(None, None)
 
 		user = "@%s" % (msg.frm.username)
 		if user == str(self.bot_identifier):
